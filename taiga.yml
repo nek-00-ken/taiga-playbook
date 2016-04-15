@@ -1,0 +1,10 @@
+---
+
+
+- hosts: taiga-back
+  roles:
+    - taiga-back
+
+#- hosts: taiga-front
+#  roles:
+#    - taiga-front
