@@ -1,0 +1,43 @@
+---
+# http://taigaio.github.io/taiga-doc/dist/setup-production.html
+
+- name: Update apt cache
+  become: yes
+  become_user: root
+  apt:
+    update_cache: yes
+
+- name: Optional dependencies
+  become: yes
+  become_user: root
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - language-pack-fr
+
+- name: Install dependencies
+  become: yes
+  become_user: root
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - build-essential
+    - binutils-doc
+    - autoconf
+    - flex
+    - bison
+    - libjpeg-dev
+    - libfreetype6-dev
+    - zlib1g-dev
+    - libzmq3-dev
+    - libgdbm-dev
+    - libncurses5-dev
+    - automake
+    - libtool
+    - libffi-dev
+    - curl
+    - git
+    - tmux
+    - gettext

@@ -1,0 +1,73 @@
+---
+# http://taigaio.github.io/taiga-doc/dist/setup-production.html
+
+- name: Install dependencies
+  become: yes
+  become_user: root
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - nginx
+  register: nginx
+
+- name: Create system user for software
+  become: yes
+  become_user: root
+  user:
+    name: taiga
+    state: present
+
+- name: Download the code from github
+  become: yes
+  become_user: root
+  git:
+    repo: https://github.com/taigaio/taiga-front-dist.git
+    version: stable
+    dest: /home/taiga/taiga-front-dist
+
+- name: Install settings templates
+  become: yes
+  become_user: root
+  template:
+    src: dist/conf.json.j2
+    dest: /home/taiga/taiga-front-dist/dist/conf.json
+
+- name: Change owner
+  become: yes
+  become_user: root
+  file:
+    path: /home/taiga/taiga-front-dist
+    state: directory
+    recurse: yes
+    owner: taiga
+    group: taiga
+
+- name: Install nginx config
+  become: yes
+  become_user: root
+  template:
+    src: nginx/taiga.conf.j2
+    dest:  /etc/nginx/sites-available/taiga
+
+- name: Disable default nginx config
+  become: yes
+  become_user: root
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Create link to site-available
+  become: yes
+  become_user: root
+  file:
+    src: /etc/nginx/sites-available/taiga
+    dest: /etc/nginx/sites-enabled/taiga
+    state: link
+
+- name: Be sure Nginx service is up
+  become: yes
+  become_user: root
+  service:
+    name: nginx
+    state: restarted

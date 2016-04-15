@@ -1,0 +1,28 @@
+---
+# http://taigaio.github.io/taiga-doc/dist/setup-production.html
+
+- name: Install circus
+  become: yes
+  become_user: root
+  command: pip2 install circus
+
+- name: Copy circus init file
+  become: yes
+  become_user: root
+  template:
+    src: conf/circus.ini.j2
+    dest: /home/taiga/conf/circus.ini
+
+- name: Copy service circus config
+  become: yes
+  become_user: root
+  template:
+    src: etc/init/circus.conf.j2
+    dest: /etc/init/circus.conf
+
+- name: Be sure circus service is up
+  become: yes
+  become_user: root
+  service:
+    name: circus
+    state: started

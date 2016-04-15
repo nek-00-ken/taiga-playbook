@@ -1,10 +1,10 @@
 from .common import *
 
-MEDIA_URL = "http://example.com/media/"
-STATIC_URL = "http://example.com/static/"
-ADMIN_MEDIA_PREFIX = "http://example.com/static/admin/"
+MEDIA_URL = "http://{{ inventory_host_ip }}/media/"
+STATIC_URL = "http://{{ inventory_host_ip }}/static/"
+ADMIN_MEDIA_PREFIX = "http://{{ inventory_host_ip }}/static/admin/"
 SITES["front"]["scheme"] = "http"
-SITES["front"]["domain"] = "example.com"
+SITES["front"]["domain"] = "{{ inventory_host_ip }}"
 
 SECRET_KEY = "theveryultratopsecretkey"
 

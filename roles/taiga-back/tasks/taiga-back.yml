@@ -1,0 +1,74 @@
+---
+# http://taigaio.github.io/taiga-doc/dist/setup-production.html
+
+- name: Create user
+  become: yes
+  become_user: root
+  user:
+    name: taiga
+    state: present
+
+- name: Create folders
+  become: yes
+  become_user: root
+  file:
+    name: "/home/taiga/{{ item }}"
+    state: directory
+    owner: taiga
+    group: taiga
+  with_items:
+    - logs
+    - conf
+
+- name: Download the code from github
+  become: yes
+  become_user: root
+  git:
+    repo: https://github.com/taigaio/taiga-back.git
+    version: stable
+    dest: /home/taiga/taiga-back
+
+- name: Create virtualenv
+  become: yes
+  become_user: root
+  command: virtualenv -p /usr/bin/python3.4 /home/taiga/.venv
+  ignore_errors: yes
+
+- name: Install requirements in virtualenv
+  become: yes
+  become_user: root
+  pip:
+    virtualenv: /home/taiga/.venv
+    requirements: /home/taiga/taiga-back/requirements.txt
+
+- name: Copy install script
+  become: yes
+  become_user: root
+  copy:
+    src: install.sh
+    dest: /home/taiga/taiga-back/install.sh
+
+- name: Copy settings template
+  become: yes
+  become_user: root
+  template:
+    src: settings/local.py.j2
+    dest: /home/taiga/taiga-back/settings/local.py
+
+- name: Change owner
+  become: yes
+  become_user: root
+  file:
+    path: /home/taiga/taiga-back
+    state: directory
+    recurse: yes
+    owner: taiga
+    group: taiga
+
+- name: Execute install script
+  become: yes
+  become_user: taiga
+  command: /bin/bash install.sh
+  ignore_errors: yes
+  args:
+    chdir: /home/taiga/taiga-back

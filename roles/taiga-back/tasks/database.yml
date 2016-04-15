@@ -1,0 +1,22 @@
+---
+
+- name: Install database dependencies
+  become: yes
+  become_user: root
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - postgresql-9.3
+    - postgresql-contrib-9.3
+    - postgresql-doc-9.3
+    - postgresql-server-dev-9.3
+
+- name: Setup initial user and DB
+  become: yes
+  become_user: postgres
+  command: "{{ item }}"
+  ignore_errors: yes
+  with_items:
+      - createuser taiga
+      - createdb taiga -O taiga

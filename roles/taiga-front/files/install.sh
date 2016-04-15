@@ -2,7 +2,7 @@
 
 # This script has to be launched
 # at root level of cloned github repository (branch: stable)
-source /home/taiga/.venv/bin/activate
+source /home/taiga/venv-back/bin/activate
 
 # Populate the database with initial basic data
 # This creates a new user admin with password 123123
