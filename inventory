@@ -3,7 +3,7 @@ taiga-back
 taiga-front
 
 [taiga-back]
-192.168.17.17 ansible_ssh_user=root
+192.168.17.17 ansible_ssh_user=vagrant inventory_host_ip=192.168.17.17
 
 [taiga-front]
-192.168.17.17 ansible_ssh_user=root
+192.168.17.17 ansible_ssh_user=vagrant inventory_host_ip=192.168.17.17
