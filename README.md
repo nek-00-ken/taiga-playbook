@@ -43,3 +43,8 @@ Vagrant.configure(2) do |config|
   end
 end
 </pre>
+
+# Notes
+
+Tested on :
+ - Ubuntu 14.04 (trusty)
