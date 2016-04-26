@@ -1,9 +1,9 @@
 [taiga:children]
-taiga-back
 taiga-front
-
-[taiga-back]
-192.168.17.17 ansible_ssh_user=vagrant inventory_host_ip=192.168.17.17
+taiga-back
 
 [taiga-front]
 192.168.17.17 ansible_ssh_user=vagrant inventory_host_ip=192.168.17.17
+
+[taiga-back]
+192.168.17.18 ansible_ssh_user=vagrant inventory_host_ip=192.168.17.18 
